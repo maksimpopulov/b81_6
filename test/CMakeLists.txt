@@ -1,33 +1,10 @@
-cmake_minimum_required(VERSION 3.10)
-project(mod-lab06-markov)
+add_executable(${PROJECT_NAME}.test
+  AllTests.cpp
+  tests.cpp)
+target_link_libraries(${PROJECT_NAME}.test
+  ${PROJECT_NAME} gtest pthread)
+target_compile_definitions(${PROJECT_NAME}.test 
+  PRIVATE TEST_DIR="${CMAKE_CURRENT_LIST_DIR}/test")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(header_path ${PROJECT_SOURCE_DIR}/include)
-set(header ${header_path}/textgen.h)
-set(src ${PROJECT_SOURCE_DIR}/src/textgen.cpp)
-
-add_library(${PROJECT_NAME} SHARED
-    ${src}
-)
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC ${header_path}
-)
-
-add_executable(${PROJECT_NAME}.info ${PROJECT_SOURCE_DIR}/src/main.cpp)
-target_link_libraries(${PROJECT_NAME}.info ${PROJECT_NAME})
-
-# Создаём тесты в папке test
-add_executable(${PROJECT_NAME}.test ${PROJECT_SOURCE_DIR}/test/tests.cpp)
-target_link_libraries(${PROJECT_NAME}.test ${PROJECT_NAME})
-
-# Устанавливаем выходную директорию для тестов
-set_target_properties(${PROJECT_NAME}.test PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test
-)
-
-# Включаем тестирование
-enable_testing()
-add_test(NAME MarkovTextGenerator COMMAND ${PROJECT_NAME}.test)
+install(TARGETS ${PROJECT_NAME}.test
+        DESTINATION "${tool_dest}")
