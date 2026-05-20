@@ -1,10 +1,10 @@
 // Copyright 2026 Maksim Populov
-#include "textgen.h"
 
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include "textgen.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
