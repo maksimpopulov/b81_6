@@ -10,7 +10,7 @@
 
 
 TextGenerator::TextGenerator(int npref, int maxgen)
-    : NPREF(npref), MAXGEN(maxgen), rng(std::random_device{}()) {
+    :NPREF(npref), MAXGEN(maxgen), rng(std::random_device{}()) {
 }
 
 void TextGenerator::setRandomSeed(unsigned seed) {
