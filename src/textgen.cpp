@@ -1,5 +1,4 @@
 // Copyright 2026 Maksim Populov
-#include "textgen.h"
 
 #include <algorithm>
 #include <fstream>
@@ -7,6 +6,8 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include "textgen.h"
+
 
 TextGenerator::TextGenerator(int npref, int maxgen)
     : NPREF(npref), MAXGEN(maxgen), rng(std::random_device{}()) {
