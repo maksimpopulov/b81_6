@@ -1,8 +1,12 @@
+// Copyright 2026 Maksim Populov
 #include "textgen.h"
-#include <fstream>
-#include <sstream>
+
 #include <algorithm>
+#include <fstream>
+#include <random>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 TextGenerator::TextGenerator(int npref, int maxgen)
     : NPREF(npref), MAXGEN(maxgen), rng(std::random_device{}()) {
@@ -30,7 +34,8 @@ void TextGenerator::build(const std::string& filename) {
     }
 
     if (prefix.size() < static_cast<size_t>(NPREF)) {
-        throw std::runtime_error("File too short to build prefix table");
+        throw std::runtime_error(
+            "File too short to build prefix table");
     }
 
     while (file >> word) {
@@ -42,7 +47,8 @@ void TextGenerator::build(const std::string& filename) {
     statetab[prefix].push_back("");
 }
 
-std::string TextGenerator::randomSuffix(const std::vector<std::string>& suffixes) {
+std::string TextGenerator::randomSuffix(
+    const std::vector<std::string>& suffixes) {
     if (suffixes.empty()) return "";
     std::uniform_int_distribution<size_t> dist(0, suffixes.size() - 1);
     return suffixes[dist(rng)];
@@ -57,7 +63,7 @@ std::string TextGenerator::generate() {
     std::vector<std::string> result(current.begin(), current.end());
 
     for (int i = 0; i < MAXGEN; ++i) {
-        auto it = statetab.find(current);
+        StateTab::const_iterator it = statetab.find(current);
         if (it == statetab.end() || it->second.empty()) break;
 
         std::string next = randomSuffix(it->second);
@@ -69,8 +75,9 @@ std::string TextGenerator::generate() {
     }
 
     std::string output;
-    for (const auto& w : result) {
-        output += w + " ";
+    for (std::vector<std::string>::const_iterator it = result.begin();
+         it != result.end(); ++it) {
+        output += *it + " ";
     }
     if (!output.empty()) output.pop_back();
     return output;
