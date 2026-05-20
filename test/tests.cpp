@@ -1,11 +1,10 @@
 // Copyright 2026 Maksim Populov
-#include "textgen.h"
-
 #include <cassert>
 #include <deque>
 #include <iostream>
 #include <string>
 #include <vector>
+#include "textgen.h"
 
 void testPrefixConstruction() {
     TextGenerator gen(2);
