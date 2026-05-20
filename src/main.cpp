@@ -1,34 +1,38 @@
-#ifndef TEXTGEN_H
-#define TEXTGEN_H
+// Copyright 2026 Maksim Populov
+#include "textgen.h"
 
-#include <deque>
-#include <map>
-#include <vector>
+#include <iostream>
+#include <fstream>
 #include <string>
-#include <random>
+#include <stdexcept>
 
-class TextGenerator {
-public:
-    using Prefix = std::deque<std::string>;
-    using StateTab = std::map<Prefix, std::vector<std::string>>;
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0]
+                  << " <input_file> [output_file]\n";
+        return 1;
+    }
 
-    TextGenerator(int npref = 2, int maxgen = 1000);
+    std::string inputFile = argv[1];
+    std::string outputFile = "result/gen.txt";
+    if (argc >= 3) {
+        outputFile = argv[2];
+    }
 
-    void build(const std::string& filename);
+    try {
+        TextGenerator gen(2, 500);
+        gen.build(inputFile);
+        std::string generated = gen.generate();
 
-    std::string generate();
+        std::ofstream out(outputFile);
+        out << generated;
+        std::cout << "Generated text saved to " << outputFile << "\n";
+        std::cout << "Preview:\n"
+                  << generated.substr(0, 300) << "...\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << "\n";
+        return 1;
+    }
 
-    StateTab getStateTab() const { return statetab; }
-    void addSuffix(const Prefix& p, const std::string& suffix);
-    void setRandomSeed(unsigned seed);
-
-private:
-    int NPREF;
-    int MAXGEN;
-    StateTab statetab;
-    std::mt19937 rng;
-
-    std::string randomSuffix(const std::vector<std::string>& suffixes);
-};
-
-#endif
+    return 0;
+}
