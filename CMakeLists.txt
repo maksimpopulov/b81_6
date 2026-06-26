@@ -6,19 +6,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find Google Test
 find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
 
 # Shared library
 add_library(${PROJECT_NAME} SHARED src/textgen.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_include_directories(${PROJECT_NAME} 
+    PRIVATE include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "mod-lab06-markov")
 
 # Main executable
 add_executable(${PROJECT_NAME}.info src/main.cpp)
+target_include_directories(${PROJECT_NAME}.info PRIVATE include)
 target_link_libraries(${PROJECT_NAME}.info ${PROJECT_NAME})
 
 # Test executable
 add_executable(${PROJECT_NAME}.test test/tests.cpp)
+target_include_directories(${PROJECT_NAME}.test 
+    PRIVATE include
+    ${GTEST_INCLUDE_DIRS}
+)
 target_link_libraries(${PROJECT_NAME}.test 
     ${PROJECT_NAME} 
     ${GTEST_LIBRARIES} 
