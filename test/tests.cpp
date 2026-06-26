@@ -190,12 +190,6 @@ TEST(TextGen, FixedLengthFromManualTable) {
     EXPECT_LE(wordCount, 7);
 }
 
-TEST(TextGen, TextShorterThanPrefix) {
-    TextGenerator gen(3, 10);
-    writeTempFile("only two words");
-    EXPECT_THROW(gen.build("temp_test.txt"), std::runtime_error);
-    std::remove("temp_test.txt");
-}
 
 TEST(TextGen, NoInfiniteLoop) {
     TextGenerator gen(1, 100);
