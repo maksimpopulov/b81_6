@@ -9,7 +9,7 @@
 #include <sstream>
 #include "textgen.h"
 
-static void writeTempFile(const std::string& content, 
+static void writeTempFile(const std::string& content,
                          const std::string& filename = "temp_test.txt") {
     std::ofstream f(filename);
     f << content;
@@ -167,7 +167,6 @@ TEST(TextGen, MultipleSuffixesRandom) {
     std::set<std::string> seen;
     for (int i = 0; i < 50; ++i) {
         std::string result = gen.generate();
-        // Just verify generation works with multiple suffixes
         EXPECT_FALSE(result.empty());
     }
 }
